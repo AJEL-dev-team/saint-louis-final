@@ -17,6 +17,11 @@ const config = {
         "2xl": "1400px",
       },
     },
+    colors: {
+      primary: '#c1121f',  
+      secondary: '#fdf0d5', 
+      accent: '#780000',   
+    },
     extend: {
       keyframes: {
         "accordion-down": {
