@@ -1,9 +1,16 @@
-import React from 'react'
+import Head from "@/components/others/Head"
+import Navbar from "@/components/others/Navbar"
 
-const layout = () => {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
   return (
-    <div>layout</div>
+    <div className="flex h-screen flex-col">
+      <Head/>
+      <Navbar/>
+      <main className="flex-1">{children}</main>
+    </div>
   )
 }
-
-export default layout
