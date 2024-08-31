@@ -30,16 +30,13 @@ export default function LocaleLayout({
 }) {
  
   return (
-    <html lang={locale}  dir={dir(locale)} >
+    <html lang={locale}  dir={dir(locale)}>
       <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
       <body className={poppins.className}>
-        <TanstackProvider>    
-          <div id="root">
+        <TanstackProvider>         
           <Navbar /> 
         {children}
         <Footer />
-            </div>     
-         
         </TanstackProvider>
         
         </body>
