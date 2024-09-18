@@ -22,7 +22,7 @@ export default function ContactUs() {
             <div className="bg-white relative flex flex-wrap py-6 rounded shadow-md">
               <div className="lg:w-1/2 px-6">
                 <h2 className="text-2xl font-semibold text-[#2e3192] tracking-widest uppercase font-playfair">ADDRESS</h2>
-                <p className="mt-1 text-[#231f20]">123 Parish Lane, Cityville, State, 12345</p>
+                <p className="mt-1 text-[#231f20]">Banaberi, Douala, Cameroon</p>
               </div>
               <div className="lg:w-1/2 px-6 mt-4 lg:mt-0">
                 <h2 className="text-2xl font-semibold text-[#2e3192] tracking-widest uppercase font-playfair">EMAIL</h2>

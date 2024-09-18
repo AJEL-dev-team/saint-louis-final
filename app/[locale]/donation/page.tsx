@@ -1,7 +1,43 @@
-// components/DonationPage.js
-import React from 'react';
+import React, { useState } from 'react';
+import axios from 'axios';
 
 export default function DonationPage() {
+  const [phone, setPhone] = useState('');
+  const [amount, setAmount] = useState('');
+  const [paymentMethod, setPaymentMethod] = useState('');
+  const [error, setError] = useState(null);
+  const [successMessage, setSuccessMessage] = useState(null);
+
+  const handleSubmit = async (e: { preventDefault: () => void; }) => {
+    e.preventDefault();
+    
+    if (!phone || !amount || !paymentMethod) {
+      setError('Please fill in all fields.');
+      return;
+    }
+
+    try {
+      setError(null); 
+      const response = await axios.post('http://localhost:8080/api/dons', {
+        phone,
+        amount,
+        payment_method: paymentMethod
+      });
+
+      if (response.status === 200) {
+        setSuccessMessage('Donation successful! Thank you for your support.');
+        setPhone('');
+        setAmount('');
+        setPaymentMethod('');
+      } else {
+        setError('Something went wrong. Please try again.');
+      }
+    } catch (err) {
+      console.error(err);
+      setError('Failed to send donation. Please try again later.');
+    }
+  };
+
   return (
     <section className="bg-[#f0f0f0] text-[#231f20]">
       {/* Hero Section */}
@@ -28,11 +64,11 @@ export default function DonationPage() {
           <p className="mb-6 text-[#231f20] font-work-sans">
             Please choose your payment method and enter the amount you'd like to donate. Every contribution makes a difference.
           </p>
-          <form
-            action="https://example.com/donate"
-            method="post"
-            className="bg-white p-8 rounded-lg shadow-lg"
-          >
+          
+          {error && <p className="text-red-500 mb-4">{error}</p>}
+          {successMessage && <p className="text-green-500 mb-4">{successMessage}</p>}
+
+          <form onSubmit={handleSubmit} className="bg-white p-8 rounded-lg shadow-lg">
             <div className="relative mb-4">
               <label htmlFor="phone" className="leading-7 text-sm text-[#231f20] font-work-sans">Phone Number</label>
               <input
@@ -40,6 +76,8 @@ export default function DonationPage() {
                 id="phone"
                 name="phone"
                 className="w-full bg-white border border-gray-300 rounded focus:border-[#2e3192] focus:ring-2 focus:ring-[#b59316] text-base outline-none text-gray-700 py-2 px-3 transition-colors duration-200 ease-in-out"
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
                 required
               />
             </div>
@@ -50,6 +88,8 @@ export default function DonationPage() {
                 id="amount"
                 name="amount"
                 className="w-full bg-white border border-gray-300 rounded focus:border-[#2e3192] focus:ring-2 focus:ring-[#b59316] text-base outline-none text-gray-700 py-2 px-3 transition-colors duration-200 ease-in-out"
+                value={amount}
+                onChange={(e) => setAmount(e.target.value)}
                 required
               />
             </div>
@@ -59,6 +99,8 @@ export default function DonationPage() {
                 id="payment-method"
                 name="payment-method"
                 className="w-full bg-white border border-gray-300 rounded focus:border-[#2e3192] focus:ring-2 focus:ring-[#b59316] text-base outline-none text-gray-700 py-2 px-3 transition-colors duration-200 ease-in-out"
+                value={paymentMethod}
+                onChange={(e) => setPaymentMethod(e.target.value)}
                 required
               >
                 <option value="">Select Payment Method</option>

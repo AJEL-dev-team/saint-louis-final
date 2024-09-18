@@ -1,5 +1,5 @@
 import Announcements from "@/components/Announcements";
-// import ChurchCarousel from "@/components/ChurchCarousel";
+import ChurchCarousel from "@/components/ChurchCarousel";
 import Footer from "@/components/Footer";
 import Gallery from "@/components/Gallery";
 import HeroSection from "@/components/HeroSection"
@@ -10,7 +10,7 @@ export default function Home() {
   return (
     <>
     <HeroSection />
-    {/* <ChurchCarousel /> */}
+    <ChurchCarousel />
     <Gallery />
     <MassTimes />
     <RecentEvent />

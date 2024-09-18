@@ -1,84 +1,46 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
+import axios from 'axios';
 
 export default function EventsPage() {
-  const upcomingEvents = [
-    {
-      title: "Community Outreach Program",
-      date: "10th September",
-      time: "3:00 PM",
-      location: "Parish Hall",
-      description: "Join us in reaching out to our local community.",
-      link: "/events/outreach-program"
-    },
-    {
-      title: "Parish Picnic",
-      date: "20th September",
-      time: "11:00 AM",
-      location: "Central Park",
-      description: "A fun-filled day for all parishioners.",
-      link: "/events/parish-picnic"
-    },
-  ];
+  // State to hold upcoming and past events
+  const [upcomingEvents, setUpcomingEvents] = useState([]);
+  const [pastEvents, setPastEvents] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
 
-  const pastEvents = [
-    {
-      title: "Youth Retreat",
-      date: "5th August",
-      location: "Retreat Center",
-      description: "A spiritual retreat for the youth.",
-      link: "/events/youth-retreat"
-    },
-    {
-      title: "Charity Drive",
-      date: "15th July",
-      location: "Parish Grounds",
-      description: "Helping those in need through our charity drive.",
-      link: "/events/charity-drive"
-    },
-    {
-        title: "Youth Retreat",
-        date: "5th August",
-        location: "Retreat Center",
-        description: "A spiritual retreat for the youth.",
-        link: "/events/youth-retreat"
-      },
-      {
-        title: "Charity Drive",
-        date: "15th July",
-        location: "Parish Grounds",
-        description: "Helping those in need through our charity drive.",
-        link: "/events/charity-drive"
-      },
-      {
-        title: "Youth Retreat",
-        date: "5th August",
-        location: "Retreat Center",
-        description: "A spiritual retreat for the youth.",
-        link: "/events/youth-retreat"
-      },
-      {
-        title: "Charity Drive",
-        date: "15th July",
-        location: "Parish Grounds",
-        description: "Helping those in need through our charity drive.",
-        link: "/events/charity-drive"
-      },
-      {
-        title: "Youth Retreat",
-        date: "5th August",
-        location: "Retreat Center",
-        description: "A spiritual retreat for the youth.",
-        link: "/events/youth-retreat"
-      },
-      {
-        title: "Charity Drive",
-        date: "15th July",
-        location: "Parish Grounds",
-        description: "Helping those in need through our charity drive.",
-        link: "/events/charity-drive"
-      },
-  ];
+  // Fetch events data from the API
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const response = await axios.get('http://localhost:8080/api/evenements');
+        const events = response.data;
+
+        // Separate upcoming and past events based on the current date
+        const currentDate = new Date();
+        const upcoming = events.filter((event: { date: string | number | Date; }) => new Date(event.date) >= currentDate);
+        const past = events.filter((event: { date: string | number | Date; }) => new Date(event.date) < currentDate);
+
+        setUpcomingEvents(upcoming);
+        setPastEvents(past);
+      } catch (err) {
+        setError('Failed to load events');
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchEvents();
+  }, []);
+
+  if (loading) {
+    return <p>Loading...</p>;
+  }
+
+  if (error) {
+    return <p>{error}</p>;
+  }
 
   return (
     <div className="bg-white">
@@ -101,7 +63,7 @@ export default function EventsPage() {
                 <p className="text-gray-600">{event.date} at {event.time}</p>
                 <p className="text-gray-600">{event.location}</p>
                 <p className="mt-2 text-gray-700">{event.description}</p>
-                <Link href={event.link}>
+                <Link href={`/events/${event.id}`}>
                   <p className="mt-4 inline-block text-blueCustom hover:underline">Read More</p>
                 </Link>
               </div>
@@ -120,7 +82,7 @@ export default function EventsPage() {
                 <h3 className="text-2xl font-semibold text-goldCustom">{event.title}</h3>
                 <p className="text-gray-600">{event.date} at {event.location}</p>
                 <p className="mt-2 text-gray-700">{event.description}</p>
-                <Link href={event.link}>
+                <Link href={`/events/${event.id}`}>
                   <p className="mt-4 inline-block text-blueCustom hover:underline">Read More</p>
                 </Link>
               </div>
