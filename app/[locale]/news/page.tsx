@@ -1,3 +1,5 @@
+"use client"
+
 import HeroNewsSection from '@/components/HeroNewsSection';
 import NewsList from '@/components/NewsList';
 import React, { useEffect, useState } from 'react';
@@ -14,7 +16,7 @@ export default function NewsPage() {
   useEffect(() => {
     const fetchNews = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/api/actualites');
+        const response = await axios.get('http://127.0.0.1:8080/api/actualites/');
         const news = response.data;
 
         // Separate upcoming and past news based on the current date

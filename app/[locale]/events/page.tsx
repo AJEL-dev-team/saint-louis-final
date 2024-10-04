@@ -1,3 +1,5 @@
+"use client"
+
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import axios from 'axios';
@@ -13,7 +15,7 @@ export default function EventsPage() {
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const response = await axios.get('http://localhost:8080/api/evenements');
+        const response = await axios.get('http://127.0.0.1:8080/api/evenements/');
         const events = response.data;
 
         // Separate upcoming and past events based on the current date
